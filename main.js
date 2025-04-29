@@ -7,49 +7,45 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // 2. Define city coordinates
 const cities = {
-  Bangkok: [13.7563, 100.5018],
-  ChiangMai: [18.7883, 98.9853],
-  Phuket: [7.8804, 98.3923]
+  "Bangkok": [13.7563, 100.5018],
+  "Chiang Mai": [18.7883, 98.9853],
+  "Phuket": [7.8804, 98.3923]
 };
 
-// 3. Add markers and bind click
+// 3. Add markers
 for (const city in cities) {
   const coords = cities[city];
   L.marker(coords)
     .addTo(map)
     .bindPopup(city)
-    .on('click', () => getWeather(city)); // <-- HERE you replace alert() with getWeather()
+    .on('click', () => getWeather(city));
 }
 
-
-
-// 4. Function to call AWS API and show data
+// 4. Diagnostic fetch to see exactly what the API returns
 function getWeather(city) {
-    const apiUrl = `https://61kb3h2tlb.execute-api.ap-southeast-2.amazonaws.com/prod/weather?city=${encodeURIComponent(city)}`;
-    
-    console.log("Requesting:", apiUrl);
-  
-    document.getElementById('weather-info').innerHTML = `<p>Loading weather for ${city}...</p>`;
-  
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(weather => {
-        console.log("Received weather:", weather); // Check what we actually get!
-  
-        document.getElementById('weather-info').innerHTML = `
-          <h3>Weather in ${weather.City}</h3>
-          <p><strong>Temperature:</strong> ${weather.Temperature}°C</p>
-          <p><strong>Humidity:</strong> ${weather.Humidity}%</p>
-          <p><strong>Description:</strong> ${weather.Description}</p>
-          <p><strong>Wind Speed:</strong> ${weather.WindSpeed} km/h</p>
-        `;
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('weather-info').innerHTML = `
-          <p style="color:red;">Failed to fetch weather.</p>
-          <pre>${error.message}</pre>
-        `;
-      });
+  const apiUrl = `https://61kb3h2tlb.execute-api.ap-southeast-2.amazonaws.com/prod/weather?city=${encodeURIComponent(city)}`;
+
+  console.log("Fetching weather for:", city);
+  console.log("API URL:", apiUrl);
+
+  document.getElementById('weather-info').innerHTML = `<p>Loading weather for ${city}...</p>`;
+
+  fetch(apiUrl)
+    .then(response => response.json())
+    .then(data => {
+      console.log("✅ FULL API response:", data);
+
+      // Display raw response on the web page too
+      document.getElementById('weather-info').innerHTML = `
+        <h3>Raw response for ${city}</h3>
+        <pre>${JSON.stringify(data, null, 2)}</pre>
+      `;
+    })
+    .catch(error => {
+      console.error('❌ Fetch error:', error);
+      document.getElementById('weather-info').innerHTML = `
+        <p style="color:red;">Failed to fetch weather for ${city}.</p>
+        <pre>${error.message}</pre>
+      `;
+    });
 }
-  
