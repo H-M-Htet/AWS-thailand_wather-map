@@ -7,9 +7,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // 2. Define city coordinates
 const cities = {
-  "Bangkok": [13.7563, 100.5018],
-  "Chiang Mai": [18.7883, 98.9853],
-  "Phuket": [7.8804, 98.3923]
+  Bangkok: [13.7563, 100.5018],
+  Chiang Mai: [18.7883, 98.9853],
+  Phuket: [7.8804, 98.3923]
 };
 
 // 3. Add markers and bind click
