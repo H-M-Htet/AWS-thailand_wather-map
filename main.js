@@ -21,6 +21,8 @@ for (const city in cities) {
     .on('click', () => getWeather(city)); // <-- HERE you replace alert() with getWeather()
 }
 
+
+
 // 4. Function to call AWS API and show data
 function getWeather(city) {
   console.log("Getting weather for:", city);
@@ -32,7 +34,9 @@ function getWeather(city) {
   fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
-      const weather = JSON.parse(data.body);
+      
+      const weather = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
+
       document.getElementById('weather-info').innerHTML = `
         <h3>Weather in ${weather.City}</h3>
         <p><strong>Temperature:</strong> ${weather.Temperature}°C</p>
