@@ -35,7 +35,7 @@ function getWeather(city) {
     .then(response => response.json())
     .then(data => {
       
-      const weather = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
+      const weather = data;
 
       document.getElementById('weather-info').innerHTML = `
         <h3>Weather in ${weather.City}</h3>
