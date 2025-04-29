@@ -25,28 +25,31 @@ for (const city in cities) {
 
 // 4. Function to call AWS API and show data
 function getWeather(city) {
-  console.log("Getting weather for:", city);
-  const apiUrl = `https://61kb3h2tlb.execute-api.ap-southeast-2.amazonaws.com/prod/weather?city=${encodeURIComponent(city)}`;
-  console.log("API URL:", apiUrl);
+    const apiUrl = `https://61kb3h2tlb.execute-api.ap-southeast-2.amazonaws.com/prod/weather?city=${encodeURIComponent(city)}`;
+    
+    console.log("Requesting:", apiUrl);
   
-  document.getElementById('weather-info').innerHTML = `<p>Loading weather for ${city}...</p>`;
-
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(data => {
-      
-      const weather = data;
-
-      document.getElementById('weather-info').innerHTML = `
-        <h3>Weather in ${weather.City}</h3>
-        <p><strong>Temperature:</strong> ${weather.Temperature}°C</p>
-        <p><strong>Humidity:</strong> ${weather.Humidity}%</p>
-        <p><strong>Description:</strong> ${weather.Description}</p>
-        <p><strong>Wind Speed:</strong> ${weather.WindSpeed} km/h</p>
-      `;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      document.getElementById('weather-info').innerHTML = 'Failed to fetch weather.';
-    });
+    document.getElementById('weather-info').innerHTML = `<p>Loading weather for ${city}...</p>`;
+  
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(weather => {
+        console.log("Received weather:", weather); // Check what we actually get!
+  
+        document.getElementById('weather-info').innerHTML = `
+          <h3>Weather in ${weather.City}</h3>
+          <p><strong>Temperature:</strong> ${weather.Temperature}°C</p>
+          <p><strong>Humidity:</strong> ${weather.Humidity}%</p>
+          <p><strong>Description:</strong> ${weather.Description}</p>
+          <p><strong>Wind Speed:</strong> ${weather.WindSpeed} km/h</p>
+        `;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('weather-info').innerHTML = `
+          <p style="color:red;">Failed to fetch weather.</p>
+          <pre>${error.message}</pre>
+        `;
+      });
 }
+  
