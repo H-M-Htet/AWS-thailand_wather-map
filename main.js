@@ -24,7 +24,7 @@ for (const city in cities) {
 // 4. Function to call AWS API and show data
 function getWeather(city) {
   console.log("Getting weather for:", city);
-  const apiUrl = `https://61kb3h2tlb.execute-api.ap-southeast-2.amazonaws.com/prod/weather?city=${city}`;
+  const apiUrl = `https://61kb3h2tlb.execute-api.ap-southeast-2.amazonaws.com/prod/weather?city=${encodeURIComponent(city)}`;
   console.log("API URL:", apiUrl);
   
   document.getElementById('weather-info').innerHTML = `<p>Loading weather for ${city}...</p>`;
